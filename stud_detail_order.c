@@ -27,47 +27,60 @@ void createnode(char name[10],int marks,int usn){
     }temp->next=newl;
 }
 
-void sorting(int size){
-    stud * temp=head;
-    int i=0;
-    while(i<size-1){
-        int j=0;
-        stud *temp=head;
-        while(j<size-i-1){
-            if(temp->marks<=temp->next->marks){
-                if(temp->marks ==temp->next->marks){
-                    if(temp->usn>temp->next->usn){
-                        int tempi=temp->marks;
-                        temp->marks=temp->next->marks;
-                        temp->next->marks=tempi;
-                        int tempj=temp->usn;
-                        temp->usn=temp->next->usn;
-                        temp->next->usn=tempj;
-                        char tempn[10];
-                        strcpy(tempn,temp->name);
-                        strcpy(temp->name,temp->next->name);
-                        strcpy(temp->next->name,tempn);
-                    }
-                }else{
-                int tempi=temp->marks;
-                temp->marks=temp->next->marks;
-                temp->next->marks=tempi;
-                int tempj=temp->usn;
-                temp->usn=temp->next->usn;
-                temp->next->usn=tempj;
-                char tempn[10];
-                strcpy(tempn,temp->name);
-                strcpy(temp->name,temp->next->name);
-                strcpy(temp->next->name,tempn);
-                }
-            }
-            temp=temp->next;
-            j++;
-        }
-        i++;
+stud* findmid(stud *head){
+    stud* slow=head;
+    stud* fast=head->next;
+    while(fast!=NULL && fast->next!=NULL){
+        slow=slow->next;
+        fast=fast->next->next;
     }
+    return slow;
 }
 
+stud* merge(stud* left, stud* right){
+    stud* newhead=NULL,*temp=NULL;
+    while(left!=NULL && right!=NULL){
+        stud *maxnode;
+        if (left->marks<right->marks) {
+            maxnode=right;
+            right=right->next;
+        } else if (left->marks > right->marks) {
+            maxnode=left;
+            left=left->next;
+        } else { 
+            if (left->usn<right->usn) {
+                maxnode=right;
+                right=right->next;
+            } else {
+                maxnode=left;
+                left=left->next;
+            }
+        if(newhead==NULL){
+            newhead=maxnode;
+            temp=maxnode;
+        }else{
+            temp->next=maxnode;
+            temp=temp->next;
+        }
+        if(left != NULL) {
+            temp->next=left;
+        }else{
+            temp->next=right;
+         }
+    }
+    return newhead;
+}
+
+stud * sorting(stud *left){
+    if(left==NULL || left->next==NULL)
+      return left;
+    stud* mid=findmid(left);
+    stud *right=mid->next;
+    mid->next=NULL;
+    left=sorting(left);
+    right=sorting(right);
+    return merge(left,right);
+}
 
 void display(){
     stud *temp=head;
@@ -79,7 +92,8 @@ void display(){
 
 int main(){
     int input_num;
-    scanf("%d",&input_num);int i=0;
+    scanf("%d",&input_num);
+    int i=0;
     int size=input_num;
     printf("enter details:\n");
     while(i!=input_num){
@@ -89,6 +103,6 @@ int main(){
         createnode(name,marks,usn);
         i++;
     }
-    sorting(size);
+    head=sorting(head);
     display();
 }
