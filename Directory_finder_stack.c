@@ -46,6 +46,30 @@ void display(){
     }
     printf("\"");
 }
+/*
+    int main(){
+    char input[100];
+    fgets(input,sizeof(input),stdin);
+    int size=strlen(input);
+    if(size>0&&input[size-1]=='\n'){
+        input[size-1]='\0';
+        size--;
+    }
+    for(int i=0;i<size;i++){
+        if(input[i]=='\"'&&strncmp(&input[i+1],"cd ",3)==0){
+            i+=4;
+            char word[10];int j=0;
+            while(i<size&&input[i]!='\"'){
+                word[j++]=input[i++];
+            }word[j]='\0';
+            createnode(word);
+        }
+    }
+    display();
+    return 0;
+}
+*/
+
 int main(){
     int n;
     printf("Enter the no of commands:");
@@ -60,3 +84,4 @@ int main(){
         return 0;
 }
 // {"usr/","./","local/","../","bin/"};
+
