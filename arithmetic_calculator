@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+long long powll(long long a,long long b,long long c) {
+    long long res=1;
+    for (int i=0;i<b;i++) {  
+        res=(res*a)%c;
+    }
+    return res;
+}
+
+long long modl(long long n, long long m) {
+    return n%m;
+}
+
+int main() {
+    long long B,N,M,RESULT;
+    printf("Enter values for B,N and M:\n");
+    scanf("%lld %lld %lld", &B,&N,&M);
+    if (M<=0) {
+        printf("Error: M must be greater than 0.\n");
+        return 1;
+    }
+
+    RESULT = powll(B,N,M);
+    RESULT = modl(RESULT,M);
+    printf("Result: %lld\n",RESULT);
+
+    return 0;
+}
